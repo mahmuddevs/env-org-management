@@ -7,8 +7,8 @@ const Header = () => {
         </>
     )
     return (
-        <header className="bg-base-100 shadow-sm">
-            <div className="navbar justify-between w-11/12 sm:container xl:8/12 mx-auto">
+        <header className="bg-base-100 shadow-sm fixed top-0 w-full z-[999]">
+            <div className="navbar justify-between global-margin">
                 <div className="">
                     <a className="text-xl">LOGO</a>
                 </div>
@@ -42,7 +42,7 @@ const Header = () => {
                             </div>
                             <ul
                                 tabIndex={0}
-                                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-4 absolute -right-4 w-52 p-2 shadow">
+                                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-4 absolute -right-2 w-52 p-2 shadow">
                                 {navItems}
                             </ul>
                         </div>
