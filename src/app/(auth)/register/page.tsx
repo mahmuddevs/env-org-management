@@ -1,7 +1,10 @@
 "use client";
 import { registerUser } from "@/actions/users/UserActions";
+import { login } from "@/lib/features/authSlice/authSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import Link from "next/link";
 import { SubmitHandler, useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 
 export enum UserType {
     ADMIN = "Admin",
@@ -18,11 +21,32 @@ export interface RegisterFormValues {
 }
 
 const Register = () => {
-    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<RegisterFormValues>();
+    const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<RegisterFormValues>();
+
+    const dispatch = useAppDispatch()
 
     const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
         const result = await registerUser({ ...data });
-        console.log(result);
+        if (!result.success) {
+            Swal.fire({
+                position: "top-end",
+                icon: "error",
+                title: "Something Went Wrong",
+                showConfirmButton: false,
+                timer: 1500
+            });
+            return
+        }
+
+        dispatch(login(result.user))
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Registered Successfully",
+            showConfirmButton: false,
+            timer: 1500
+        });
+        reset()
     };
 
     return (

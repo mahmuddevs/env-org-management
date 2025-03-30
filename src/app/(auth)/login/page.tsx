@@ -1,7 +1,10 @@
 "use client"
 import { LoginUser } from "@/actions/users/UserActions"
+import { login } from "@/lib/features/authSlice/authSlice"
+import { useAppDispatch, useAppSelector } from "@/lib/hooks"
 import Link from "next/link"
 import { SubmitHandler, useForm } from "react-hook-form"
+import Swal from "sweetalert2"
 
 interface LoginFormValues {
     email: string
@@ -10,12 +13,31 @@ interface LoginFormValues {
 
 const Login = () => {
     const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<LoginFormValues>()
+    const dispatch = useAppDispatch()
 
     const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
         const result = await LoginUser({ ...data })
-        if (result.success) {
-            console.log("working")
+        if (!result.success) {
+            Swal.fire({
+                position: "top-end",
+                icon: "error",
+                title: "Something Went Wrong",
+                showConfirmButton: false,
+                timer: 1500
+            });
+            return
         }
+
+        dispatch(login(result.user))
+
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Logged In Successfully",
+            showConfirmButton: false,
+            timer: 1500
+        });
+        reset()
     }
 
     return (

@@ -13,7 +13,7 @@ interface LoginCredentials {
 
 export const registerUser = async ({ name, email, password, userType, image }: RegisterFormValues) => {
     if (!name || !email || !password || !userType) {
-        return { error: "All fields are required!" };
+        return { success: false, user: null, error: "All fields are required!" };
     }
 
     try {
@@ -21,7 +21,7 @@ export const registerUser = async ({ name, email, password, userType, image }: R
 
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-            return { error: "User already exists with this email." };
+            return { success: false, user: null, error: "User Exists" }
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -30,7 +30,7 @@ export const registerUser = async ({ name, email, password, userType, image }: R
 
 
         if (!newUser) {
-            return
+            return { success: false, user: null }
         }
 
         const token = generateToken(newUser.email)
@@ -65,12 +65,12 @@ export const LoginUser = async ({ email, password }: LoginCredentials) => {
         await dbConnect();
         const user = await User.findOne({ email })
         if (!user) {
-            return { error: "User not found" };
+            return { success: false, user: null, error: "User not found" };
         }
         const isPassMatched = await bcrypt.compare(password, user.password)
 
         if (!isPassMatched) {
-            return { error: "Invalid credentials" };
+            return { success: false, user: null, error: "Invalid credentials" };
         }
 
         const token = generateToken(email)
@@ -115,4 +115,11 @@ export const getAuthenticatedUser = async () => {
 
     return { success: true, user: { ...safeUser, password: null } }
 
+}
+
+export const logoutUser = async () => {
+    const cookieStore = await cookies();
+    cookieStore.delete('authToken')
+
+    return { success: true }
 }

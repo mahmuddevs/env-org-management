@@ -19,7 +19,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     useEffect(() => {
         getUser()
-    }, [])
+    }, [user, dispatch])
     return (
         <>{children}</>
     )

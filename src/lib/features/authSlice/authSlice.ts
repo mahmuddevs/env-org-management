@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 interface AuthenticatedUser {
-    user: object,
+    user: object | null,
     isLoading: boolean
 }
 
 const initialState: AuthenticatedUser = {
-    user: {},
+    user: null,
     isLoading: false
 }
 
@@ -21,7 +21,7 @@ const authSlice = createSlice({
         },
         logout: (state) => {
             state.isLoading = true,
-                state.user = {},
+                state.user = null,
                 state.isLoading = false
         }
     }
