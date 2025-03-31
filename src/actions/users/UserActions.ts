@@ -2,7 +2,7 @@
 import { RegisterFormValues } from "@/app/(auth)/register/page";
 import User from "@/db/UserSchema";
 import dbConnect from "@/lib/dbConnect";
-import generateToken, { verifyToken } from "@/lib/jwt/JWT";
+import generateToken, { DecodedToken, verifyToken } from "@/lib/jwt/JWT";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 
@@ -33,7 +33,7 @@ export const registerUser = async ({ name, email, password, userType, image }: R
             return { success: false, user: null }
         }
 
-        const token = generateToken(newUser.email)
+        const token = generateToken(newUser.email, userType)
 
         const cookieStore = await cookies();
 
@@ -73,7 +73,7 @@ export const LoginUser = async ({ email, password }: LoginCredentials) => {
             return { success: false, user: null, error: "Invalid credentials" };
         }
 
-        const token = generateToken(email)
+        const token = generateToken(email, user?.userType || "Volunteer")
 
         const cookieStore = await cookies();
 
@@ -101,7 +101,9 @@ export const getAuthenticatedUser = async () => {
     const cookieStore = await cookies();
     const token = cookieStore.get('authToken')?.value
 
-    const email = verifyToken(token)
+    const decoded = verifyToken(token) as { email: string, userType: string }
+
+    const email = decoded?.email
 
     await dbConnect()
 

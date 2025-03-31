@@ -1,9 +1,9 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
 export enum UserType {
-    ADMIN = "Admin",
-    VOLUNTEER = "Volunteer",
-    DONOR = "Donor",
+    ADMIN = "admin",
+    VOLUNTEER = "volunteer",
+    DONOR = "donor",
 }
 
 export interface IUser extends Document {

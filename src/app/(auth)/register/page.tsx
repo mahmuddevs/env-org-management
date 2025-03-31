@@ -3,13 +3,14 @@ import { registerUser } from "@/actions/users/UserActions";
 import { login } from "@/lib/features/authSlice/authSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 
 export enum UserType {
-    ADMIN = "Admin",
-    VOLUNTEER = "Volunteer",
-    DONOR = "Donors",
+    ADMIN = "admin",
+    VOLUNTEER = "volunteer",
+    DONOR = "donor",
 }
 
 export interface RegisterFormValues {
@@ -24,6 +25,8 @@ const Register = () => {
     const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<RegisterFormValues>();
 
     const dispatch = useAppDispatch()
+
+    const router = useRouter()
 
     const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
         const result = await registerUser({ ...data });
@@ -47,6 +50,7 @@ const Register = () => {
             timer: 1500
         });
         reset()
+        router.push('/')
     };
 
     return (
@@ -55,7 +59,7 @@ const Register = () => {
                 <div className="card-body">
                     <form method="POST" onSubmit={handleSubmit(onSubmit)} className="fieldset">
                         <label className="fieldset-label">Name</label>
-                        <input type="text" className="input" placeholder="Name"
+                        <input type="text" className="input w-full" placeholder="Name"
                             {...register("name", { required: "Name is Required" })}
                         />
                         {errors.name && (
@@ -64,7 +68,7 @@ const Register = () => {
                             </span>
                         )}
                         <label className="fieldset-label">Email</label>
-                        <input type="email" className="input" placeholder="Email"
+                        <input type="email" className="input w-full" placeholder="Email"
                             {...register("email", { required: "Email is Required" })}
                         />
                         {errors.email && (
@@ -73,7 +77,7 @@ const Register = () => {
                             </span>
                         )}
                         <label className="fieldset-label">Password</label>
-                        <input type="password" className="input" placeholder="Password"
+                        <input type="password" className="input w-full" placeholder="Password"
                             {...register("password", {
                                 required: "Password is Required",
                                 minLength: {
@@ -92,7 +96,7 @@ const Register = () => {
                             </span>
                         )}
                         <label className="fieldset-label">Account Type</label>
-                        <select defaultValue="" className="select"
+                        <select defaultValue="" className="select w-full"
                             {...register("userType", { required: "Type is Required" })}>
                             <option value="" disabled>Select A Type</option>
                             <option value={UserType.VOLUNTEER}>Volunteer</option>
@@ -104,8 +108,8 @@ const Register = () => {
                             </span>
                         )}
                         <div className="flex justify-between">
-                            <Link href="/login" className="link link-hover">Already Have an Account?</Link>
-                            <Link href="/register">Login Here.</Link>
+                            <span>Already Have an Account?</span>
+                            <Link href="/login" className="link link-hover text-blue-600">Login Here.</Link>
                         </div>
                         <button type="submit" className="btn btn-primary mt-4" disabled={isSubmitting}>
                             {isSubmitting ? "Registering..." : "Register"}

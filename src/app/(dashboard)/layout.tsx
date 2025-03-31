@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 export const metadata: Metadata = {
-  title: "Auth",
+  title: "Dashboard",
   description: "abcdd",
 };
 
-export default function AuthLayout({
+export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
     <>
-      <Header />
       <main className="min-h-screen">
         {children}
       </main>

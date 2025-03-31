@@ -3,6 +3,7 @@ import { LoginUser } from "@/actions/users/UserActions"
 import { login } from "@/lib/features/authSlice/authSlice"
 import { useAppDispatch, useAppSelector } from "@/lib/hooks"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { SubmitHandler, useForm } from "react-hook-form"
 import Swal from "sweetalert2"
 
@@ -14,6 +15,7 @@ interface LoginFormValues {
 const Login = () => {
     const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<LoginFormValues>()
     const dispatch = useAppDispatch()
+    const router = useRouter()
 
     const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
         const result = await LoginUser({ ...data })
@@ -38,6 +40,8 @@ const Login = () => {
             timer: 1500
         });
         reset()
+        router.push('/')
+
     }
 
     return (
@@ -46,7 +50,7 @@ const Login = () => {
                 <div className="card-body">
                     <form method="POST" onSubmit={handleSubmit(onSubmit)} className="fieldset">
                         <label className="fieldset-label">Email</label>
-                        <input type="email" className="input" placeholder="Email"
+                        <input type="email" className="input w-full" placeholder="Email"
                             {...register("email", { required: "Email is Required" })}
                         />
                         {errors.email && (
@@ -55,7 +59,7 @@ const Login = () => {
                             </span>
                         )}
                         <label className="fieldset-label">Password</label>
-                        <input type="password" className="input" placeholder="Password"
+                        <input type="password" className="input w-full" placeholder="Password"
                             {...register("password", { required: "Psassword is Required" })}
                         />
                         {errors.password && (
@@ -65,9 +69,11 @@ const Login = () => {
                         )}
                         <div className="flex justify-between">
                             <a className="link link-hover">Forgot password?</a>
-                            <div>Or, <Link href='/register'>Create an Account.</Link></div>
+                            <div>Or, <Link href='/register' className="link link-hover text-blue-600">Create an Account.</Link></div>
                         </div>
-                        <button type="submit" className="btn btn-primary mt-4">Login</button>
+                        <button type="submit" className="btn btn-primary mt-4" disabled={isSubmitting}>
+                            {isSubmitting ? "Logging In..." : "Login"}
+                        </button>
                     </form>
                 </div>
             </div>
