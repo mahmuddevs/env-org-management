@@ -9,3 +9,15 @@
 .global-margin {
     @apply w-full px-4 sm:container md:px-6 lg:px-8 xl:w-8/12 mx-auto;
 }
+
+.slider-height {
+    @apply h-[65vh] md:h-[85vh]
+}
+
+.swiper-pagination-bullet {
+    @apply z-10
+}
+
+p {
+    @apply text-base
+}

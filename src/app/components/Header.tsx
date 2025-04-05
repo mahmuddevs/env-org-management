@@ -1,18 +1,33 @@
+import { FaLeaf } from "react-icons/fa6"
 import UserProfile from "./UserProfile"
+import Link from "next/link"
 
 const Header = () => {
     const navItems = (
         <>
-            <li><a>Item 1</a></li>
-            <li><a>Item 1</a></li>
-            <li><a>Item 1</a></li>
+            <li><Link href="/home" className="text-black lg:text-white hover:text-emerald-300 transition-colors font-semibold">
+                Home
+            </Link></li>
+            <li><Link href="/about" className="text-black lg:text-white hover:text-emerald-300 transition-colors font-semibold">
+                About Us
+            </Link></li>
+            <li><Link href="/events" className="text-black lg:text-white hover:text-emerald-300 transition-colors font-semibold">
+                Events
+            </Link></li>
+            <li><Link href="/donate" className="text-black lg:text-white hover:text-emerald-300 transition-colors font-semibold">
+                Donate
+            </Link></li>
+            <li><Link href="/contact" className="text-black lg:text-white hover:text-emerald-300 transition-colors font-semibold">
+                Contact Us
+            </Link></li>
         </>
     )
     return (
-        <header className="bg-base-100 shadow-sm fixed top-0 w-full z-[999]">
+        <header className="w-full bg-black/40 backdrop-blur-sm fixed top-0 z-[999]">
             <div className="navbar justify-between global-margin">
-                <div className="">
-                    <a className="text-xl">LOGO</a>
+                <div className="flex items-center gap-2">
+                    <FaLeaf className="h-6 w-6 text-emerald-400" />
+                    <span className="font-bold text-white text-xl">EcoAlliance</span>
                 </div>
                 <div className="flex items-center gap-4">
                     <div className="hidden lg:flex">
@@ -23,8 +38,8 @@ const Header = () => {
                     <div className="flex items-center">
                         <UserProfile />
                         <div className="dropdown relative">
-                            <div tabIndex={0} role="button" className="hover:bg-gray-100 cursor-pointer rounded-lg p-3 lg:hidden transition-colors duration-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
+                            <div tabIndex={0} role="button" className="hover:bg-gray-100/40 cursor-pointer rounded-lg p-2 lg:hidden transition-colors duration-300 ms-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="#ffffff" viewBox="0 0 24 24" stroke="#ffffff"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
                             </div>
                             <ul
                                 tabIndex={0}
