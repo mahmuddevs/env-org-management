@@ -24,7 +24,7 @@ const Header = () => {
     )
     return (
         <header className="w-full bg-black/40 backdrop-blur-sm fixed top-0 z-[999]">
-            <div className="navbar justify-between global-margin">
+            <div className="navbar justify-between global-container">
                 <div className="flex items-center gap-2">
                     <FaLeaf className="h-6 w-6 text-emerald-400" />
                     <span className="font-bold text-white text-xl">EcoAlliance</span>

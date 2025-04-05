@@ -6,8 +6,17 @@
 
 ;
 
-.global-margin {
+.global-container {
     @apply w-full px-4 sm:container md:px-6 lg:px-8 xl:w-8/12 mx-auto;
+}
+
+.global-margin {
+    @apply my-12 md:my-24
+}
+
+
+.global-padding {
+    @apply py-12 md:py-24
 }
 
 .slider-height {
