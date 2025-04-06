@@ -5,7 +5,7 @@ import Link from "next/link"
 const Header = () => {
     const navItems = (
         <>
-            <li><Link href="/home" className="text-black lg:text-white hover:text-emerald-300 transition-colors font-semibold">
+            <li><Link href="/" className="text-black lg:text-white hover:text-emerald-300 transition-colors font-semibold">
                 Home
             </Link></li>
             <li><Link href="/about" className="text-black lg:text-white hover:text-emerald-300 transition-colors font-semibold">

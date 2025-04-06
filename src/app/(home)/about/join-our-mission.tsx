@@ -12,13 +12,13 @@ const JoinOurMission = () => {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Link
-                        href="/volunteer"
+                        href="/dashboard/volunteer"
                         className="btn btn-lg bg-white text-emerald-700 hover:bg-emerald-100 border-none gap-2"
                     >
                         Become a Volunteer
                         <FaArrowRight className="h-5 w-5" />
                     </Link>
-                    <Link href="/donate" className="btn btn-lg btn-warning text-white hover:bg-amber-600 gap-2">
+                    <Link href="/dashboard/donor" className="btn btn-lg btn-warning text-white hover:bg-amber-600 gap-2">
                         Make a Donation
                         <FaHeart className="h-5 w-5" />
                     </Link>

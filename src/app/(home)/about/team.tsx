@@ -1,3 +1,4 @@
+import SectionTitle from "@/app/components/SectionTitle"
 import Image from "next/image"
 
 const team = [
@@ -5,34 +6,30 @@ const team = [
         name: "Sarah Johnson",
         role: "Executive Director",
         bio: "With over 15 years of experience in environmental conservation, Sarah leads our organization with passion and vision.",
-        image: "/placeholder.svg?height=300&width=300",
+        image: "https://randomuser.me/api/portraits/women/75.jpg",
     },
     {
         name: "Michael Chen",
         role: "Director of Operations",
         bio: "Michael oversees our day-to-day operations and ensures our programs run efficiently and effectively.",
-        image: "/placeholder.svg?height=300&width=300",
+        image: "https://randomuser.me/api/portraits/men/75.jpg",
     },
     {
         name: "Amara Okafor",
         role: "Community Outreach Manager",
         bio: "Amara builds and maintains relationships with communities, volunteers, and partner organizations.",
-        image: "/placeholder.svg?height=300&width=300",
+        image: "https://randomuser.me/api/portraits/women/70.jpg",
     },
 ]
 
 const OurTeam = () => {
     return (
-        <section className="py-16 bg-emerald-50">
+        <section className="py-16">
             <div className="container mx-auto px-4">
-                <div className="text-center mb-12">
-                    <h2 className="text-3xl font-bold text-gray-800 mb-4">Our Leadership Team</h2>
-                    <p className="text-gray-600 max-w-2xl mx-auto">
-                        Meet the dedicated professionals who guide our organization's mission and strategy.
-                    </p>
-                    <div className="w-24 h-1 bg-emerald-400 mx-auto mt-4"></div>
-                </div>
-
+                <SectionTitle
+                    heading="Our Leadership Team"
+                    paragraph=" Meet the dedicated professionals who guide our organization's mission and strategy."
+                />
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     {team.map((member, index) => (
                         <div key={index} className="card bg-base-100 shadow-md hover:shadow-lg transition-shadow">

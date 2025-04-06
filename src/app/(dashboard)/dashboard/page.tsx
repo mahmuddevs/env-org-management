@@ -9,7 +9,7 @@ const Dashboard = () => {
     const router = useRouter()
 
     useEffect(() => {
-        if (user === null) {
+        if (!user) {
             router.push('/login')
         } else if (user) {
             const { userType } = user as { userType: string }
@@ -23,8 +23,8 @@ const Dashboard = () => {
         }
     }, [user, router])
 
-    if (user === null) {
-        return <Spinner small={null} />
+    if (!user) {
+        return <Spinner />
     }
 
     return null

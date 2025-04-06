@@ -1,18 +1,16 @@
 import Image from "next/image"
+import storyImage from '../../../../public/assets/images/our-storyt.jpg'
+import SectionTitle from "@/app/components/SectionTitle"
 
 const OurStory = () => {
     return (
-        <section className="py-16 bg-emerald-50">
+        <section className="py-16">
             <div className="container mx-auto px-4">
-                <div className="text-center mb-12">
-                    <h2 className="text-3xl font-bold text-gray-800 mb-4">Our Story</h2>
-                    <div className="w-24 h-1 bg-emerald-400 mx-auto"></div>
-                </div>
-
+                <SectionTitle heading="Our Story" />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                     <div className="relative h-[400px] rounded-lg overflow-hidden shadow-xl">
                         <Image
-                            src=""
+                            src={storyImage}
                             alt="EcoAlliance team working on conservation project"
                             fill
                             className="object-cover"
