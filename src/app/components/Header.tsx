@@ -25,10 +25,10 @@ const Header = () => {
     return (
         <header className="w-full bg-black/40 backdrop-blur-sm fixed top-0 z-[999]">
             <div className="navbar justify-between global-container">
-                <div className="flex items-center gap-2">
+                <Link href='/' className="flex items-center gap-2">
                     <FaLeaf className="h-6 w-6 text-emerald-400" />
-                    <span className="font-bold text-white text-xl">EcoAlliance</span>
-                </div>
+                    <span className="font-bold text-white text-2xl">EcoAlliance</span>
+                </Link>
                 <div className="flex items-center gap-4">
                     <div className="hidden lg:flex">
                         <ul className="menu menu-horizontal px-1">

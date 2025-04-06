@@ -1,5 +1,6 @@
 import { FaCalendar, FaChevronRight, FaHeart, FaUsers } from "react-icons/fa6"
 import Slider from "./slider"
+import Link from "next/link"
 
 const Hero = () => {
     return (
@@ -14,17 +15,17 @@ const Hero = () => {
                             </h1>
                             <p className="!text-xl text-shadow-lg md:w-10/12">Join us in protecting the planet through community-driven events, volunteer programs, and impactful donations.</p>
                             <div className="flex flex-col sm:flex-row gap-4">
-                                <button className="btn btn-success btn-lg gap-2 text-white">
+                                <Link href='/events' className="btn btn-success btn-lg gap-2 text-white">
                                     <FaCalendar className="h-5 w-5" />
                                     View Upcoming Events
                                     <FaChevronRight className="h-4 w-4" />
-                                </button>
+                                </Link>
 
-                                <button className="btn btn-outline btn-lg
+                                <Link href='/dashboard/volunteer' className="btn btn-outline btn-lg
                                 bg-black/40 border-emerald-400 text-emerald-400 hover:bg-black-20 hover:border-emerald-500  gap-2">
                                     <FaUsers className="h-5 w-5" />
                                     Become a Volunteer
-                                </button>
+                                </Link>
                                 {/* <button className="btn btn-warning btn-lg text-white gap-2 hover:bg-amber-600">
                                     <FaHeart className="h-5 w-5" />
                                     Donate Now

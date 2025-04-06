@@ -1,0 +1,20 @@
+import UserProfile from "@/app/components/UserProfile"
+import { CiMenuFries } from "react-icons/ci"
+
+interface HeaderProps {
+    handleNav: () => void
+}
+
+const Header = ({ handleNav }: HeaderProps) => {
+    return (
+        <header className="flex bg-gray-200 shadow-md justify-between items-center p-6">
+            <div onClick={handleNav} className="cursor-pointer text-2xl">
+                <CiMenuFries />
+            </div>
+            <div>
+                <UserProfile />
+            </div>
+        </header>
+    )
+}
+export default Header

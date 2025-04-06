@@ -30,3 +30,15 @@
 p {
     @apply text-base
 }
+
+.dash-nav li {
+    @apply py-4 px-2 md:px-6 text-base md:text-xl w-full
+}
+
+.dash-nav li a {
+    @apply flex gap-4 w-full items-center
+}
+
+.dash-nav li:hover {
+    @apply bg-stone-500 text-white
+}
