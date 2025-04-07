@@ -127,7 +127,9 @@ export const logoutUser = async () => {
 }
 
 export const getAllUsers = async () => {
+    await dbConnect()
     const allUsers = await User.find({}).select('-password')
+
     if (!allUsers) {
         return { success: false, users: null }
     }
@@ -140,6 +142,8 @@ export const deleteUser = async (id: string) => {
     if (!id) {
         return { success: false, message: "Unable To Delete User" }
     }
+
+    await dbConnect()
 
     const { userType } = await User.findById(id).select('userType') as { userType: string }
 
@@ -160,6 +164,8 @@ export const handleUpdateUserType = async (id: string, userType: string) => {
     if (!id || !userType) {
         return { success: false, message: "Invalid Selection" }
     }
+
+    await dbConnect()
 
     const updatedUser = await User.findByIdAndUpdate(id, { userType }, { new: true, select: '-password' })
 

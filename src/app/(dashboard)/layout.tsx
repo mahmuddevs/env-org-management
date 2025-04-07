@@ -39,7 +39,7 @@ export default function DashboardLayout({
           <div className={`${navActive ? "w-4/12 md:w-2/12" : "w-2/12 md:w-1/12"} bg-emerald-50 h-screen fixed`}>
             <Sidebar navActive={navActive} />
           </div>
-          <div className={`${navActive ? "w-8/12 md:w-10/12" : "w-10/12 md:w-11/12"} ms-auto h-[200vh]`}>
+          <div className={`${navActive ? "w-8/12 md:w-10/12" : "w-10/12 md:w-11/12"} ms-auto`}>
             <Header handleNav={handleNav} />
             {children}
           </div>

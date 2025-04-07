@@ -1,4 +1,4 @@
-import { getAllUsers } from "@/actions/users/UserActions"
+import { getAllUsers } from "@/actions/users/UserActions";
 import UsersTableBody from "./UsersTableBody";
 
 export interface User {
@@ -10,11 +10,12 @@ export interface User {
 }
 
 const UsersTable = async () => {
-    const { users }: { users: User[] } = await getAllUsers()
+    const { users }: { users: User[] } = await getAllUsers();
+
     return (
-        <div className="overflow-x-auto">
-            <table className="table table-zebra">
-                <thead>
+        <div className="overflow-x-auto shadow-lg rounded-lg border mx-4 my-6">
+            <table className="table w-full">
+                <thead className="bg-green-100 text-green-800 font-semibold text-sm">
                     <tr>
                         <th>#</th>
                         <th>Photo</th>
@@ -27,6 +28,7 @@ const UsersTable = async () => {
                 <UsersTableBody users={users} />
             </table>
         </div>
-    )
-}
-export default UsersTable
+    );
+};
+
+export default UsersTable;

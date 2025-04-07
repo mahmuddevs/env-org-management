@@ -7,7 +7,7 @@ interface HeaderProps {
 
 const Header = ({ handleNav }: HeaderProps) => {
     return (
-        <header className="flex bg-gray-200 shadow-md justify-between items-center p-6">
+        <header className="flex bg-gray-200 shadow-md justify-between items-center p-6 sticky top-0 z-50">
             <div onClick={handleNav} className="cursor-pointer text-2xl">
                 <CiMenuFries />
             </div>
