@@ -32,7 +32,7 @@ const Sidebar = ({ navActive }: SidebarProps) => {
                 className={`${navActive ? "" : "w-full justify-center"}`}
                 href='/dashboard/admin/event-management'>
                 <HiOutlineCalendarDays />
-                {navActive && <span>Event Management</span>}
+                {navActive && <span>Manage Event</span>}
             </Link></li>
             <li><Link
                 className={`${navActive ? "" : "w-full justify-center"}`}

@@ -4,6 +4,7 @@ import { logoutUser } from "@/actions/users/UserActions";
 import { logout } from "@/lib/features/authSlice/authSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks"
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 
 interface User {
@@ -14,6 +15,7 @@ interface User {
 
 const UserProfile = () => {
     const user = useAppSelector((state) => state.auth.user as User);
+    const router = useRouter()
 
     const dispatch = useAppDispatch()
 
@@ -31,6 +33,7 @@ const UserProfile = () => {
             showConfirmButton: false,
             timer: 1500
         });
+        router.push('/')
     }
     return (
         <>
@@ -48,7 +51,10 @@ const UserProfile = () => {
                             tabIndex={0}
                             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-40 p-2 shadow">
                             <li>
-                                <a>user name</a>
+                                <a>{user.name}</a>
+                            </li>
+                            <li>
+                                <Link href='/dashboard'>Dashboard</Link>
                             </li>
                             <li onClick={handleLogout}><a>Logout</a></li>
                         </ul>

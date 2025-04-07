@@ -125,3 +125,47 @@ export const logoutUser = async () => {
 
     return { success: true }
 }
+
+export const getAllUsers = async () => {
+    const allUsers = await User.find({}).select('-password')
+    if (!allUsers) {
+        return { success: false, users: null }
+    }
+
+    const safeUsers = JSON.parse(JSON.stringify(allUsers));
+    return { success: true, users: safeUsers }
+}
+
+export const deleteUser = async (id: string) => {
+    if (!id) {
+        return { success: false, message: "Unable To Delete User" }
+    }
+
+    const { userType } = await User.findById(id).select('userType') as { userType: string }
+
+    if (userType === 'admin') {
+        return { success: false, message: "Can't Delete Admin Account" }
+    }
+
+    const result = await User.findByIdAndDelete(id)
+
+    if (!result) {
+        return { success: false, message: "Unable To Delete User" }
+    }
+
+    return { success: true, message: "Successfully Deleted User" }
+}
+
+export const handleUpdateUserType = async (id: string, userType: string) => {
+    if (!id || !userType) {
+        return { success: false, message: "Invalid Selection" }
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(id, { userType }, { new: true, select: '-password' })
+
+    if (!updatedUser) {
+        return { success: false, message: "Unable To Update User Type" }
+    }
+
+    return { success: true, message: "User Updated Successfully" }
+}
