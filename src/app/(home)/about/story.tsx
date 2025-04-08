@@ -1,5 +1,5 @@
 import Image from "next/image"
-import storyImage from '../../../../public/assets/images/our-storyt.jpg'
+import storyImage from '../../../../public/assets/images/our-story.jpg'
 import SectionTitle from "@/app/components/SectionTitle"
 
 const OurStory = () => {

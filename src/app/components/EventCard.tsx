@@ -1,13 +1,6 @@
 import Link from "next/link";
 import { FaCalendarDay, FaMapPin } from "react-icons/fa6";
-
-interface EventCardProps {
-    _id: string,
-    image: string;
-    name: string;
-    date: string;
-    location: string;
-}
+import { EventCardProps } from "../(home)/upcoming-events";
 
 
 const EventCard = ({ _id, image, name, date, location }: EventCardProps) => {

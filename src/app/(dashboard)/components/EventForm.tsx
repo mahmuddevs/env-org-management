@@ -1,5 +1,6 @@
 "use client"
 
+import { addEvent } from "@/actions/events/EventActions"
 import { useForm } from "react-hook-form"
 
 type EventType = "Awareness Campaign" | "Clean-up Drive" | "Webinar"
@@ -24,7 +25,8 @@ const EventForm = () => {
     } = useForm<IEventFormInput>()
 
     const onSubmit = async (data: IEventFormInput) => {
-        console.log(data)
+        const { success, message } = await addEvent(data)
+        console.log(message)
     }
 
     return (
