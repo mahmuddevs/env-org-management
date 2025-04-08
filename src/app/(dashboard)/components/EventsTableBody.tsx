@@ -1,9 +1,54 @@
 "use client"
 
 import { FaEdit, FaTrash } from "react-icons/fa"
-import { Event } from "./EventsTable"
+import { useAppDispatch, useAppSelector } from "@/lib/hooks"
+import { fetchEvents, removeFromEventState } from "@/lib/features/eventSlice/eventSlice"
+import { useEffect } from "react"
+import { deleteEvent } from "@/actions/events/EventActions"
+import Swal from "sweetalert2"
 
-const EventsTableBody = ({ events }: { events: Event[] }) => {
+const EventsTableBody = () => {
+    const dispatch = useAppDispatch();
+    const { events } = useAppSelector((state) => state.events);
+
+    useEffect(() => {
+        dispatch(fetchEvents());
+    }, [dispatch]);
+
+    const handleDelete = async (id: string) => {
+        const result = await Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        })
+
+        if (result.isConfirmed) {
+            const { success, message, deletedEvent } = await deleteEvent(id)
+
+            if (!success) {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "error",
+                    title: "Your work has been saved",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                return
+            }
+
+            Swal.fire({
+                title: "Deleted!",
+                text: `${message}`,
+                icon: "success"
+            });
+            dispatch(removeFromEventState(deletedEvent._id))
+        }
+    }
+
     return (
         <tbody>
             {events.length > 0 ? (
@@ -16,9 +61,10 @@ const EventsTableBody = ({ events }: { events: Event[] }) => {
                         <td>{event.location}</td>
                         <td>{event.maxVolunteer}</td>
                         <td>{new Date(event.deadline).toLocaleDateString()}</td>
-                        <td className="flex items-center gap-3">
+                        <td className="flex items-center gap-3 text-2xl">
                             <FaEdit className="text-blue-500 cursor-pointer" title="Edit" />
-                            <FaTrash className="text-red-500 cursor-pointer" title="Delete" />
+                            <FaTrash onClick={() => { handleDelete(event._id) }}
+                                className="text-red-500 cursor-pointer" title="Delete" />
                         </td>
                     </tr>
                 ))

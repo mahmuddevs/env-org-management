@@ -1,7 +1,10 @@
 "use client"
 
 import { addEvent } from "@/actions/events/EventActions"
+import { addToEventState } from "@/lib/features/eventSlice/eventSlice"
+import { useAppDispatch } from "@/lib/hooks"
 import { useForm } from "react-hook-form"
+import Swal from "sweetalert2"
 
 type EventType = "Awareness Campaign" | "Clean-up Drive" | "Webinar"
 
@@ -24,9 +27,30 @@ const EventForm = () => {
         reset
     } = useForm<IEventFormInput>()
 
+    const dispatch = useAppDispatch()
+
     const onSubmit = async (data: IEventFormInput) => {
-        const { success, message } = await addEvent(data)
-        console.log(message)
+        const { success, message, newEvent } = await addEvent(data)
+        if (!success) {
+            Swal.fire({
+                position: "top-end",
+                icon: "error",
+                title: `${message}`,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: `${message}`,
+            showConfirmButton: false,
+            timer: 1500
+        });
+
+        dispatch(addToEventState(newEvent))
+        reset()
     }
 
     return (

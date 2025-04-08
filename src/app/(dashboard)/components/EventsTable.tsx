@@ -1,20 +1,19 @@
-import { getAllEvents } from "@/actions/events/EventActions"
 import EventsTableBody from "./EventsTableBody"
 
-export interface Event {
-    _id: string,
-    name: string,
-    description: string,
-    eventType: "Awareness Campaign" | "Clean-up Drive" | "Webinar",
-    date: Date,
-    location: string,
-    maxVolunteer: number,
-    deadline: Date,
-    bannerImage: string,
-}
+// export interface Event {
+//     _id: string,
+//     name: string,
+//     description: string,
+//     eventType: "Awareness Campaign" | "Clean-up Drive" | "Webinar",
+//     date: Date,
+//     location: string,
+//     maxVolunteer: number,
+//     deadline: Date,
+//     bannerImage: string,
+// }
 
 const EventsTable = async () => {
-    const { events } = await getAllEvents()
+
     return (
         <div className="overflow-x-auto shadow-lg rounded-lg border">
             <table className="table w-full">
@@ -30,7 +29,7 @@ const EventsTable = async () => {
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <EventsTableBody events={events} />
+                <EventsTableBody />
             </table>
         </div>
     )

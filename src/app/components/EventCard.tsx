@@ -1,12 +1,20 @@
 import Link from "next/link";
 import { FaCalendarDay, FaMapPin } from "react-icons/fa6";
 import { EventCardProps } from "../(home)/upcoming-events";
+import Image from "next/image";
 
 
-const EventCard = ({ _id, image, name, date, location }: EventCardProps) => {
+const EventCard = ({ _id, bannerImage, name, date, location }: EventCardProps) => {
     return (
         <div className="bg-white shadow-lg rounded-2xl overflow-hidden transition hover:shadow-xl">
-            <img src={image} alt={name} className="w-full h-48 object-cover" />
+
+            <Image
+                src={bannerImage}
+                alt={name}
+                width={500}
+                height={200}
+                className="w-full h-48 object-cover"
+            />
 
             <div className="p-4 space-y-3">
                 <h2 className="text-xl font-semibold text-gray-800">{name}</h2>

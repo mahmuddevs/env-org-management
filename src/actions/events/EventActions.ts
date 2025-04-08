@@ -73,6 +73,7 @@ export const addEvent = async (data: EventFormData) => {
 
     const eventData = { ...data, bannerImage: imageURL }
 
+    await dbConnect()
 
     const result = await Event.create(eventData)
 
@@ -80,5 +81,27 @@ export const addEvent = async (data: EventFormData) => {
         return { success: false, message: "Failed To Create Event" }
     }
 
-    return { success: true, message: "Event Create Successfully" }
+    const safeEvent = JSON.parse(JSON.stringify(result));
+
+    return { success: true, message: "Event Create Successfully", newEvent: safeEvent }
 }
+
+
+export const deleteEvent = async (id: string) => {
+    if (!id) {
+        return { success: false, message: "Event ID Not Valid" }
+    }
+
+    const result = await Event.findByIdAndDelete(id)
+
+    if (!result) {
+        return { success: false, message: "Unable To Delete Event" }
+    }
+
+    const safeDeletedEvent = JSON.parse(JSON.stringify(result))
+
+    return { success: true, message: "Event Deleted Successfully", deletedEvent: safeDeletedEvent }
+}
+
+
+

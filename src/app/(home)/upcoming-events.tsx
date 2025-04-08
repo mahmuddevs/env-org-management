@@ -5,7 +5,7 @@ import { getFeaturedEvents } from "@/actions/events/EventActions"
 
 export interface EventCardProps {
     _id: string;
-    image: string;
+    bannerImage: string;
     name: string;
     date: string;
     location: string;
