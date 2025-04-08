@@ -1,15 +1,17 @@
+import { FC } from 'react';
+
 interface EventPageProps {
     params: {
         id: string;
     };
 }
 
-const EventDetails = ({ params }: EventPageProps) => {
-    const { id } = params
+const EventDetails: FC<EventPageProps> = ({ params }) => {
+    const { id } = params;
 
     return (
-        <div>EventDetails</div>
-    )
+        <div>Event Details for {id}</div>
+    );
 }
 
-export default EventDetails
+export default EventDetails;
