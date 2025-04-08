@@ -76,7 +76,7 @@ const UsersTableBody = ({ users: initialUsers }: { users: User[] }) => {
                 users.map((user, index) => (
                     <tr key={user._id}>
                         <td>{index + 1}</td>
-                        <td><img src={user.image} className="w-15" alt="" /></td>
+                        <td><img src={user.image} className="w-15" alt={user.name} /></td>
                         <td>{user.name}</td>
                         <td>{user.email}</td>
                         <td>

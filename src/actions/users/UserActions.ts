@@ -2,7 +2,7 @@
 import { RegisterFormValues } from "@/app/(auth)/register/page";
 import User from "@/db/UserSchema";
 import dbConnect from "@/lib/dbConnect";
-import generateToken, { DecodedToken, verifyToken } from "@/lib/jwt/JWT";
+import generateToken, { verifyToken } from "@/lib/jwt/JWT";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 

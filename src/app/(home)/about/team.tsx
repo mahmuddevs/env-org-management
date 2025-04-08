@@ -28,7 +28,7 @@ const OurTeam = () => {
             <div className="container mx-auto px-4">
                 <SectionTitle
                     heading="Our Leadership Team"
-                    paragraph=" Meet the dedicated professionals who guide our organization's mission and strategy."
+                    paragraph=" Meet the dedicated professionals who guide our organization&apos;s mission and strategy."
                 />
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     {team.map((member, index) => (

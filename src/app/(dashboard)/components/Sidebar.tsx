@@ -1,3 +1,4 @@
+import { IUser } from "@/db/UserSchema"
 import { useAppSelector } from "@/lib/hooks"
 import { RootState } from "@/lib/store"
 import Link from "next/link"
@@ -12,7 +13,7 @@ interface SidebarProps {
 
 const Sidebar = ({ navActive }: SidebarProps) => {
     const { user } = useAppSelector((state: RootState) => (state.auth))
-    const userType = (user as any)?.userType
+    const userType = (user as IUser)?.userType
 
     const sideNavAdmin = (
         <>

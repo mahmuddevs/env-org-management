@@ -1,7 +1,7 @@
 "use client";
 import { registerUser } from "@/actions/users/UserActions";
 import { login } from "@/lib/features/authSlice/authSlice";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppDispatch } from "@/lib/hooks";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";

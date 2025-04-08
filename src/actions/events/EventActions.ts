@@ -1,6 +1,6 @@
 "use server"
 
-import Event, { IEvent } from "@/db/EventSchema"
+import Event from "@/db/EventSchema"
 import dbConnect from "@/lib/dbConnect"
 
 interface EventFormData {
@@ -60,7 +60,7 @@ export const addEvent = async (data: EventFormData) => {
 
     const res = await fetch(`https://api.imgbb.com/1/upload?key=${process.env.IMGBB_API_KEY}`, {
         method: "POST",
-        body: formData as any,
+        body: formData,
     });
 
     const img = await res.json();
