@@ -1,17 +1,15 @@
-import { FC } from 'react';
 
-interface EventPageProps {
-    params: {
-        id: string;
-    };
-}
 
-const EventDetails: FC<EventPageProps> = ({ params }) => {
-    const { id } = params;
+const EventDetails = async ({ params }: {
+    params: Promise<{ id: string }>
+}) => {
+    const { id } = await params
+
+    console.log(id)
 
     return (
-        <div>Event Details for {id}</div>
-    );
+        <div>EventDetails</div>
+    )
 }
 
-export default EventDetails;
+export default EventDetails
