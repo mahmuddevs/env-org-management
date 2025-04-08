@@ -4,7 +4,7 @@ interface EventPageProps {
     };
 }
 
-const EventDetails = async ({ params }: EventPageProps) => {
+const EventDetails = ({ params }: EventPageProps) => {
     const { id } = params
 
     return (
