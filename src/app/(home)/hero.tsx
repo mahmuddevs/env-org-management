@@ -1,4 +1,4 @@
-import { FaCalendar, FaChevronRight, FaHeart, FaUsers } from "react-icons/fa6"
+import { FaCalendar, FaChevronRight, FaUsers } from "react-icons/fa6"
 import Slider from "./slider"
 import Link from "next/link"
 

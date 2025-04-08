@@ -6,7 +6,6 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks"
 import { ReactNode, useEffect } from "react"
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
-    const user = useAppSelector(state => state.auth.user)
     const dispatch = useAppDispatch()
 
     const getUser = async () => {
