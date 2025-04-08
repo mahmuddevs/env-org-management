@@ -7,17 +7,12 @@ import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 
-export enum UserType {
-    ADMIN = "admin",
-    VOLUNTEER = "volunteer",
-    DONOR = "donor",
-}
 
 export interface RegisterFormValues {
     name: string;
     email: string;
     password: string;
-    userType?: UserType;
+    userType?: "admin" | "volunteer" | "donor";
     image?: string;
 }
 
@@ -99,8 +94,8 @@ const Register = () => {
                         <select defaultValue="" className="select w-full"
                             {...register("userType", { required: "Type is Required" })}>
                             <option value="" disabled>Select A Type</option>
-                            <option value={UserType.VOLUNTEER}>Volunteer</option>
-                            <option value={UserType.DONOR}>Donor</option>
+                            <option value="volunteer">Volunteer</option>
+                            <option value="donor">Donor</option>
                         </select>
                         {errors.userType && (
                             <span className="text-error text-xs mt-1">
