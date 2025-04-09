@@ -28,8 +28,8 @@ const initialState: EventState = {
 
 export const fetchEvents = createAsyncThunk(
     'events/fetchAll',
-    async () => {
-        return await getAllEvents();
+    async (sortOrder: number) => {
+        return await getAllEvents(sortOrder);
     }
 );
 

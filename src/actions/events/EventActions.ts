@@ -14,10 +14,15 @@ interface EventFormData {
     bannerImage: FileList
 }
 
-export const getAllEvents = async () => {
+export const getAllEvents = async (sortOrder: number = 0) => {
     await dbConnect()
 
-    const events = await Event.find({})
+    let sortOption = {}
+    if (sortOrder !== 0) {
+        sortOption = { date: sortOrder === -1 ? -1 : 1 }
+    }
+
+    const events = await Event.find({}).sort(sortOption)
 
     if (!events) {
         return { success: false, message: "No Events Found" }
