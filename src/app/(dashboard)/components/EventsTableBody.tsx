@@ -12,7 +12,7 @@ const EventsTableBody = () => {
     const { events } = useAppSelector((state) => state.events);
 
     useEffect(() => {
-        dispatch(fetchEvents());
+        dispatch(fetchEvents(0));
     }, [dispatch]);
 
     const handleDelete = async (id: string) => {
