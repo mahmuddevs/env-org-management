@@ -12,7 +12,15 @@ import EventButtons from "@/app/components/EventButtons";
 
 const EventDetails = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
+
   const { event } = await getEventById(id);
+
+  if (!event) {
+    return (
+      <div className="text-center py-20 text-red-500">Event not found.</div>
+    );
+  }
+
   return (
     <div className="text-gray-800">
       <div className="relative w-full h-[300px] md:h-[400px] overflow-hidden">
