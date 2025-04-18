@@ -10,8 +10,14 @@ import Image from "next/image";
 import { getEventById } from "@/actions/events/EventActions";
 import EventButtons from "@/app/components/EventButtons";
 
-const EventDetails = async ({ params }: { params: { id: string } }) => {
-  const { id } = params;
+type Props = {
+  params: {
+    id: string;
+  };
+};
+
+const EventDetails = async ({ params }: Props) => {
+  const id = params?.id;
 
   const { event } = await getEventById(id);
 
