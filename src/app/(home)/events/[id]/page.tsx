@@ -11,21 +11,13 @@ import { getEventById } from "@/actions/events/EventActions";
 import EventButtons from "@/app/components/EventButtons";
 
 type Props = {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
 };
 
 const EventDetails = async ({ params }: Props) => {
-  const id = params?.id;
+  const { id } = await params;
 
   const { event } = await getEventById(id);
-
-  if (!event) {
-    return (
-      <div className="text-center py-20 text-red-500">Event not found.</div>
-    );
-  }
 
   return (
     <div className="text-gray-800">
