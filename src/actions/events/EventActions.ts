@@ -33,6 +33,20 @@ export const getAllEvents = async (sortOrder: number = 0) => {
   return { success: true, events: safeEvents };
 };
 
+export const getEventById = async (id: string) => {
+  await dbConnect();
+
+  const event = await Event.findById(id);
+
+  if (!event) {
+    return { success: false, message: "No Event Found" };
+  }
+
+  const safeEvent = JSON.parse(JSON.stringify(event));
+
+  return { success: true, event: safeEvent };
+};
+
 export const getFeaturedEvents = async () => {
   await dbConnect();
 

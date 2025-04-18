@@ -279,7 +279,7 @@ const EventUpdateModal = ({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="btn btn-primary"
+              className="btn bg-emerald-600 text-white"
             >
               {isSubmitting ? "Updating..." : "Update Event"}
             </button>
