@@ -1,79 +1,79 @@
-"use server";
+"use server"
 
-import Event from "@/db/EventSchema";
-import dbConnect from "@/lib/dbConnect";
+import Event from "@/db/EventSchema"
+import dbConnect from "@/lib/dbConnect"
 
 interface EventFormData {
-  name: string;
-  description: string;
-  eventType: "Awareness Campaign" | "Clean-up Drive" | "Webinar";
-  date: string;
-  location: string;
-  maxVolunteer: number;
-  deadline: string;
-  bannerImage: FileList | string;
+  name: string
+  description: string
+  eventType: "Awareness Campaign" | "Clean-up Drive" | "Webinar"
+  date: string
+  location: string
+  maxVolunteer: number
+  deadline: string
+  bannerImage: FileList | string
 }
 
 export const getAllEvents = async (sortOrder: number = 0) => {
-  await dbConnect();
+  await dbConnect()
 
-  let sortOption = {};
+  let sortOption = {}
   if (sortOrder !== 0) {
-    sortOption = { date: sortOrder === -1 ? -1 : 1 };
+    sortOption = { date: sortOrder === -1 ? -1 : 1 }
   }
 
-  const events = await Event.find({}).sort(sortOption);
+  const events = await Event.find({}).sort(sortOption)
 
   if (!events) {
-    return { success: false, message: "No Events Found" };
+    return { success: false, message: "No Events Found" }
   }
 
-  const safeEvents = JSON.parse(JSON.stringify(events));
+  const safeEvents = JSON.parse(JSON.stringify(events))
 
-  return { success: true, events: safeEvents };
-};
+  return { success: true, events: safeEvents }
+}
 
 export const getEventById = async (id: string) => {
-  await dbConnect();
+  await dbConnect()
 
-  const event = await Event.findById(id);
+  const event = await Event.findById(id)
 
   if (!event) {
-    return { success: false, message: "No Event Found" };
+    return { success: false, message: "No Event Found" }
   }
 
-  const safeEvent = JSON.parse(JSON.stringify(event));
+  const safeEvent = JSON.parse(JSON.stringify(event))
 
-  return { success: true, event: safeEvent };
-};
+  return { success: true, event: safeEvent }
+}
 
 export const getFeaturedEvents = async () => {
-  await dbConnect();
+  await dbConnect()
 
-  const events = await Event.find({}).sort({ createdAt: -1 }).limit(3);
+  const events = await Event.find({}).sort({ createdAt: -1 }).limit(3)
 
   if (!events) {
-    return { success: false, message: "No Events Found" };
+    return { success: false, message: "No Events Found" }
   }
 
-  const safeEvents = JSON.parse(JSON.stringify(events));
+  const safeEvents = JSON.parse(JSON.stringify(events))
 
-  return { success: true, events: safeEvents };
-};
+  return { success: true, events: safeEvents }
+}
 
 export const addEvent = async (data: EventFormData) => {
   if (!data) {
-    return { success: false, message: "No Data Received" };
+    return { success: false, message: "No Data Received" }
   }
 
-  const file = data.bannerImage[0];
+  const file = data.bannerImage[0]
 
   if (!file) {
-    return { success: false, message: "Image Not Found" };
+    return { success: false, message: "Image Not Found" }
   }
 
-  const formData = new FormData();
-  formData.append("image", file);
+  const formData = new FormData()
+  formData.append("image", file)
 
   const res = await fetch(
     `https://api.imgbb.com/1/upload?key=${process.env.IMGBB_API_KEY}`,
@@ -81,67 +81,67 @@ export const addEvent = async (data: EventFormData) => {
       method: "POST",
       body: formData,
     }
-  );
+  )
 
-  const img = await res.json();
+  const img = await res.json()
 
   if (!img) {
-    return { success: false, message: "Image Upload Failed" };
+    return { success: false, message: "Image Upload Failed" }
   }
 
-  const imageURL = img?.data?.image?.url;
+  const imageURL = img?.data?.image?.url
 
-  const eventData = { ...data, bannerImage: imageURL };
+  const eventData = { ...data, bannerImage: imageURL }
 
-  await dbConnect();
+  await dbConnect()
 
-  const result = await Event.create(eventData);
+  const result = await Event.create(eventData)
 
   if (!result) {
-    return { success: false, message: "Failed To Create Event" };
+    return { success: false, message: "Failed To Create Event" }
   }
 
-  const safeEvent = JSON.parse(JSON.stringify(result));
+  const safeEvent = JSON.parse(JSON.stringify(result))
 
   return {
     success: true,
     message: "Event Create Successfully",
     newEvent: safeEvent,
-  };
-};
+  }
+}
 
 export const deleteEvent = async (id: string) => {
   if (!id) {
-    return { success: false, message: "Event ID Not Valid" };
+    return { success: false, message: "Event ID Not Valid" }
   }
 
-  const result = await Event.findByIdAndDelete(id);
+  const result = await Event.findByIdAndDelete(id)
 
   if (!result) {
-    return { success: false, message: "Unable To Delete Event" };
+    return { success: false, message: "Unable To Delete Event" }
   }
 
-  const safeDeletedEvent = JSON.parse(JSON.stringify(result));
+  const safeDeletedEvent = JSON.parse(JSON.stringify(result))
 
   return {
     success: true,
     message: "Event Deleted Successfully",
     deletedEvent: safeDeletedEvent,
-  };
-};
+  }
+}
 
 export const updateEvent = async (id: string, data: EventFormData) => {
   if (!id || !data) {
-    return { success: false, message: "No Data Received" };
+    return { success: false, message: "No Data Received" }
   }
 
-  let eventData = {};
+  let eventData = {}
 
-  const file = data?.bannerImage[0];
+  const file = data?.bannerImage[0]
 
   if (file) {
-    const formData = new FormData();
-    formData.append("image", file);
+    const formData = new FormData()
+    formData.append("image", file)
 
     const res = await fetch(
       `https://api.imgbb.com/1/upload?key=${process.env.IMGBB_API_KEY}`,
@@ -149,34 +149,44 @@ export const updateEvent = async (id: string, data: EventFormData) => {
         method: "POST",
         body: formData,
       }
-    );
+    )
 
-    const img = await res.json();
+    const img = await res.json()
 
     if (!img) {
-      return { success: false, message: "Image Upload Failed" };
+      return { success: false, message: "Image Upload Failed" }
     }
 
-    const imageURL = img?.data?.image?.url;
+    const imageURL = img?.data?.image?.url
 
-    eventData = { ...data, bannerImage: imageURL };
+    eventData = { ...data, bannerImage: imageURL }
   } else {
-    eventData = { ...data };
+    eventData = { ...data }
   }
 
-  await dbConnect();
+  await dbConnect()
 
-  const result = await Event.findByIdAndUpdate(id, eventData, { new: true });
+  const result = await Event.findByIdAndUpdate(id, eventData, { new: true })
 
   if (!result) {
-    return { success: false, message: "Failed To Create Event" };
+    return { success: false, message: "Failed To Create Event" }
   }
 
-  const safeEvent = JSON.parse(JSON.stringify(result));
+  const safeEvent = JSON.parse(JSON.stringify(result))
 
   return {
     success: true,
     message: "Event Create Successfully",
     updatedEvent: safeEvent,
-  };
-};
+  }
+}
+
+export const upcomingEvents = async () => {
+  await dbConnect()
+
+  const upcomingEvents = await Event.countDocuments({
+    date: { $gte: new Date() },
+  })
+
+  return upcomingEvents
+}

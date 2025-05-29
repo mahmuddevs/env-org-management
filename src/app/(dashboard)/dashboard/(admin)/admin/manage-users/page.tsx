@@ -1,11 +1,10 @@
 import UsersTable from "@/app/(dashboard)/components/UsersTable"
 
 const ManageUsers = () => {
-    return (
-        <>
-
-            <UsersTable />
-        </>
-    )
+  return (
+    <>
+      <UsersTable />
+    </>
+  )
 }
 export default ManageUsers
