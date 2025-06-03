@@ -1,36 +1,13 @@
 "use client"
 import CheckoutForm from "@/app/components/StripeCheckout"
-import { RefObject, useEffect, useState } from "react"
+import { Dispatch, RefObject, SetStateAction, useEffect, useState } from "react"
 
 type Props = {
   modalRef: RefObject<HTMLDialogElement | null>
-  amount: number
+  clientSecret: string | null
 }
 
-const PaymentModal = ({ modalRef, amount }: Props) => {
-  const [clientSecret, setClientSecret] = useState<string | null>(null)
-
-  useEffect(() => {
-    const fetchClientSecret = async () => {
-      const res = await fetch("/api/stripePaymentIntent", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          amount: Math.round(amount * 100),
-        }),
-      })
-
-      const data = await res.json()
-      setClientSecret(data.clientSecret)
-    }
-
-    fetchClientSecret()
-  }, [])
-
-  console.log(clientSecret)
-
+const PaymentModal = ({ modalRef, clientSecret }: Props) => {
   return (
     <dialog ref={modalRef} className="modal modal-middle">
       <div className="modal-box">

@@ -1,35 +1,36 @@
 "use client"
-import { Dispatch, FormEvent, RefObject, SetStateAction, useState } from "react"
+import { FormEvent, RefObject } from "react"
 
 type Props = {
   modalRef: RefObject<HTMLDialogElement | null>
-  amount: number
-  setAmount: Dispatch<SetStateAction<number>>
   openPaymentModal: (amount: number) => void
+  formRef: RefObject<HTMLFormElement | null>
 }
 
-const DonateModal = ({
-  modalRef,
-  amount,
-  setAmount,
-  openPaymentModal,
-}: Props) => {
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {}
+const DonateModal = ({ modalRef, openPaymentModal, formRef }: Props) => {
+  const handleInput = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    const inputAmount = Number(formData.get("amount"))
+    if (inputAmount < 15) {
+      return
+    }
+    openPaymentModal(inputAmount)
+  }
+
   return (
     <dialog ref={modalRef} className="modal modal-middle">
       <div className="modal-box">
         <h3 className="font-bold text-lg">Donate</h3>
         <div className="space-y-4 mt-4">
           <div className="space-y-2">
-            <form onSubmit={handleSubmit}>
+            <form ref={formRef} onSubmit={handleInput}>
               <label htmlFor="amount">Enter Amount (Min: 15$)</label>
               <input
                 type="number"
                 name="amount"
                 className="input input-bordered w-full mb-2"
                 placeholder="Enter amount"
-                value={amount}
-                onChange={(e) => setAmount(Number(e.target.value))}
                 min={15}
               />
               <button
@@ -42,7 +43,10 @@ const DonateModal = ({
             <button
               type="button"
               className="btn w-full"
-              onClick={() => modalRef.current?.close()}
+              onClick={() => {
+                formRef.current?.reset()
+                modalRef.current?.close()
+              }}
             >
               Cancel
             </button>

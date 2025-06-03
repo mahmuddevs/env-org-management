@@ -77,7 +77,11 @@ export default function CheckoutForm({
   } as Appearance | undefined
 
   return (
-    <Elements stripe={stripePromise} options={{ appearance, clientSecret }}>
+    <Elements
+      key={clientSecret}
+      stripe={stripePromise}
+      options={{ appearance, clientSecret }}
+    >
       <PaymentForm />
     </Elements>
   )

@@ -4,7 +4,7 @@ import { FaHeart, FaMapPin, FaUsers } from "react-icons/fa6"
 import { Event } from "./page"
 import Link from "next/link"
 import Image from "next/image"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import PaymentModal from "./PaymentModal"
 import DonateModal from "@/app/(dashboard)/components/DonateModal"
 
@@ -19,18 +19,37 @@ const EventCard = ({
 }: Event) => {
   const paymentModalRef = useRef<HTMLDialogElement>(null)
   const donateModalRef = useRef<HTMLDialogElement>(null)
-
-  const [amount, setAmount] = useState<number>(0)
-
-  console.log(amount)
+  const [clientSecret, setClientSecret] = useState<string | null>(null)
+  const formRef = useRef<HTMLFormElement>(null)
 
   const openDonateModal = () => {
     donateModalRef.current?.showModal()
   }
-  const openPaymentModal = (amount: number) => {
-    setAmount(amount)
-    paymentModalRef.current?.showModal()
+  const openPaymentModal = async (amount: number) => {
+    const fetchClientSecret = async () => {
+      const res = await fetch("/api/stripePaymentIntent", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          amount: Math.round(amount * 100),
+        }),
+      })
+
+      const { clientSecret } = await res.json()
+      return clientSecret
+    }
+
+    const clientSecret = await fetchClientSecret()
+    setClientSecret(clientSecret)
   }
+
+  useEffect(() => {
+    paymentModalRef.current?.showModal()
+    formRef.current?.reset()
+    donateModalRef.current?.close()
+  }, [clientSecret])
 
   return (
     <>
@@ -89,13 +108,18 @@ const EventCard = ({
         </div>
       </div>
       <DonateModal
+        key={_id}
+        formRef={formRef}
         modalRef={donateModalRef}
-        amount={amount}
-        setAmount={setAmount}
         openPaymentModal={openPaymentModal}
       />
-      {amount > 0 && (
-        <PaymentModal modalRef={paymentModalRef} amount={amount} />
+      {clientSecret && (
+        <PaymentModal
+          key={_id + "mdl"}
+          modalRef={paymentModalRef}
+          clientSecret={clientSecret}
+          // setClientSecret={setClientSecret}
+        />
       )}
     </>
   )
