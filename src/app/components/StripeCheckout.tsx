@@ -1,4 +1,6 @@
 "use client"
+import { saveTransaction } from "@/actions/events/DonationActions"
+import { useAppSelector } from "@/lib/hooks"
 import {
   Elements,
   PaymentElement,
@@ -12,10 +14,10 @@ import Swal from "sweetalert2"
 // This is your test publishable API key.
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!)
 
-function PaymentForm() {
+function PaymentForm({ eventID, closeModal }: { eventID: string, closeModal: () => void }) {
   const stripe = useStripe()
   const elements = useElements()
-
+  const { user } = useAppSelector(state => state.auth)
   const [message, setMessage] = useState<string | null | undefined>(null)
   const [isLoading, setIsLoading] = useState<Boolean>(false)
 
@@ -28,7 +30,7 @@ function PaymentForm() {
 
     setIsLoading(true)
 
-    const { error } = await stripe.confirmPayment({
+    const paymentResult = await stripe.confirmPayment({
       elements,
       confirmParams: {
         return_url: "",
@@ -36,17 +38,56 @@ function PaymentForm() {
       redirect: "if_required",
     })
 
+    const { error, paymentIntent } = paymentResult
+
     if (error) {
       if (error.type === "card_error" || error.type === "validation_error") {
         setMessage(error.message)
       } else {
         setMessage("An unexpected error occurred.")
       }
-
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: `${error.message}`,
+        showConfirmButton: false,
+        timer: 1500
+      });
       setIsLoading(false)
       return
     }
+
+    const amount = paymentIntent.amount
+
+    const transactionData = {
+      userEmail: user?.email,
+      userID: user?._id,
+      amount: amount / 100,
+      eventID
+    }
+
+    const { success, message } = await saveTransaction(transactionData)
+
+    if (!success) {
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: `${message}`,
+        showConfirmButton: false,
+        timer: 1500
+      });
+      setIsLoading(false)
+      return
+    }
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: `${message}`,
+      showConfirmButton: false,
+      timer: 1500
+    });
     setIsLoading(false)
+    closeModal()
   }
 
   return (
@@ -69,8 +110,12 @@ function PaymentForm() {
 
 export default function CheckoutForm({
   clientSecret,
+  eventID,
+  closeModal
 }: {
-  clientSecret: string
+  clientSecret: string,
+  eventID: string,
+  closeModal: () => void
 }) {
   const appearance = {
     theme: "stripe",
@@ -82,7 +127,7 @@ export default function CheckoutForm({
       stripe={stripePromise}
       options={{ appearance, clientSecret }}
     >
-      <PaymentForm />
+      <PaymentForm eventID={eventID} closeModal={closeModal} />
     </Elements>
   )
 }

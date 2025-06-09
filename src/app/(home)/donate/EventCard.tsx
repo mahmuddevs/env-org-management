@@ -26,6 +26,7 @@ const EventCard = ({
     donateModalRef.current?.showModal()
   }
   const openPaymentModal = async (amount: number) => {
+
     const fetchClientSecret = async () => {
       const res = await fetch("/api/stripePaymentIntent", {
         method: "POST",
@@ -118,7 +119,7 @@ const EventCard = ({
           key={_id + "mdl"}
           modalRef={paymentModalRef}
           clientSecret={clientSecret}
-          // setClientSecret={setClientSecret}
+          eventID={_id}
         />
       )}
     </>

@@ -12,7 +12,6 @@ const DonationSchema = new Schema<IDonation>(
     userEmail: {
       type: String,
       required: [true, "User email is required"],
-      unique: true,
       trim: true,
       lowercase: true,
       minLength: [3, "Minimum length of email is 3 characters"],

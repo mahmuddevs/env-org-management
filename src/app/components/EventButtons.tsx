@@ -2,12 +2,14 @@
 
 import { FaDonate, FaHandsHelping } from "react-icons/fa";
 import VolunteerApplyModal from "./VolunteerApplyModal";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ApplyAsVolunteer } from "@/actions/events/VolunteerActions";
 import Swal from "sweetalert2";
 import { useAppSelector } from "@/lib/hooks";
 import { redirect } from "next/navigation";
+import DonateModal from "../(dashboard)/components/DonateModal";
+import PaymentModal from "../(home)/donate/PaymentModal";
 
 export type FormValues = {
   name: string;
@@ -16,7 +18,11 @@ export type FormValues = {
 };
 
 const EventButtons = ({ eventId }: { eventId: string }) => {
-  const modalRef = useRef<HTMLDialogElement>(null);
+  const volunteerModalRef = useRef<HTMLDialogElement>(null);
+  const paymentModalRef = useRef<HTMLDialogElement>(null)
+  const donateModalRef = useRef<HTMLDialogElement>(null)
+  const [clientSecret, setClientSecret] = useState<string | null>(null)
+  const formRef = useRef<HTMLFormElement>(null)
   const { user } = useAppSelector((state) => state.auth);
 
   const {
@@ -41,26 +47,38 @@ const EventButtons = ({ eventId }: { eventId: string }) => {
       return;
     }
 
-    modalRef.current?.showModal();
+    volunteerModalRef.current?.showModal();
   };
 
-  const handleDonateButton = () => {
-    if (!user) {
-      redirect("/login");
-    }
-    if (user?.userType !== "donor") {
-      Swal.fire({
-        position: "top-end",
-        icon: "warning",
-        title: "Please Login As A Donor",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-      return;
+  const openDonateModal = () => {
+    donateModalRef.current?.showModal()
+  }
+  const openPaymentModal = async (amount: number) => {
+    const fetchClientSecret = async () => {
+      const res = await fetch("/api/stripePaymentIntent", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          amount: Math.round(amount * 100),
+        }),
+      })
+
+      const { clientSecret } = await res.json()
+      return clientSecret
     }
 
-    modalRef.current?.showModal();
-  };
+    const clientSecret = await fetchClientSecret()
+    setClientSecret(clientSecret)
+  }
+
+  useEffect(() => {
+    paymentModalRef.current?.showModal()
+    formRef.current?.reset()
+    donateModalRef.current?.close()
+  }, [clientSecret])
+
 
   const onSubmit = async (data: FormValues) => {
     const { success, message } = await ApplyAsVolunteer({ eventId, ...data });
@@ -83,11 +101,11 @@ const EventButtons = ({ eventId }: { eventId: string }) => {
       timer: 1500,
     });
     reset();
-    modalRef?.current?.close();
+    volunteerModalRef?.current?.close();
   };
 
   return (
-    <div>
+    <>
       <div className="flex flex-col sm:flex-row gap-4 mt-10">
         <button
           className="btn bg-emerald-600 text-white w-full sm:w-auto"
@@ -98,7 +116,7 @@ const EventButtons = ({ eventId }: { eventId: string }) => {
         </button>
 
         <button
-          onClick={handleDonateButton}
+          onClick={openDonateModal}
           className="btn btn-error text-white w-full sm:w-auto"
         >
           <FaDonate className="mr-2" />
@@ -107,12 +125,26 @@ const EventButtons = ({ eventId }: { eventId: string }) => {
       </div>
 
       <VolunteerApplyModal
-        modalRef={modalRef}
+        modalRef={volunteerModalRef}
         register={register}
         handleSubmit={handleSubmit(onSubmit)}
         errors={errors}
       />
-    </div>
+      <DonateModal
+        key={eventId}
+        formRef={formRef}
+        modalRef={donateModalRef}
+        openPaymentModal={openPaymentModal}
+      />
+      {clientSecret && (
+        <PaymentModal
+          key={eventId + "mdl"}
+          eventID={eventId}
+          modalRef={paymentModalRef}
+          clientSecret={clientSecret}
+        />
+      )}
+    </>
   );
 };
 

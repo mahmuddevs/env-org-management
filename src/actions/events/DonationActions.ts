@@ -16,7 +16,7 @@ export const saveTransaction = async ({
   amount,
   eventID,
 }: TransactionInfo) => {
-  if (!userEmail || !userID || !amount || eventID) {
+  if (!userEmail || !userID || !amount || !eventID) {
     return { success: false, message: "No Data Received" }
   }
 
@@ -36,4 +36,26 @@ export const saveTransaction = async ({
   }
 
   return { success: true, message: "Transaction Successful" }
+}
+
+export const getDonationOfThisYear = async () => {
+  const currentYear = new Date().getFullYear()
+  const result = await Donation.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: new Date("2025-01-01T00:00:00.000Z"),
+          $lt: new Date("2026-01-01T00:00:00.000Z"),
+        },
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        totalAmount: { $sum: "$amount" },
+      },
+    },
+  ]);
+
+  return result[0]?.totalAmount || 0;
 }

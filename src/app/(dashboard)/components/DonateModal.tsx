@@ -1,5 +1,7 @@
 "use client"
+import { useAppSelector } from "@/lib/hooks"
 import { FormEvent, RefObject } from "react"
+import Swal from "sweetalert2"
 
 type Props = {
   modalRef: RefObject<HTMLDialogElement | null>
@@ -8,8 +10,21 @@ type Props = {
 }
 
 const DonateModal = ({ modalRef, openPaymentModal, formRef }: Props) => {
+  const { user } = useAppSelector(state => state.auth)
   const handleInput = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if (!user) {
+      Swal.fire({
+        position: "top-end",
+        icon: "warning",
+        title: "Please Login As A Donor",
+        showConfirmButton: false,
+        timer: 1500
+      });
+      formRef.current?.reset()
+      modalRef.current?.close()
+      return
+    }
     const formData = new FormData(e.currentTarget)
     const inputAmount = Number(formData.get("amount"))
     if (inputAmount < 15) {

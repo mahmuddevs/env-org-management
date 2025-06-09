@@ -8,7 +8,8 @@ const Admin = async () => {
   const { userPerMonth } = await getUserPerMonth()
   return (
     <section>
-      <div className="grid md:grid-cols-3 gap-4 mx-4 my-6">
+      <h3 className="text-2xl font-bold m-4">Statistics of {new Date().getFullYear()}</h3>
+      <div className="grid md:grid-cols-3 gap-4 mx-4 my-3">
         <TotalDonations />
         <TotalVolunteers />
         <UpcomingEvents />
